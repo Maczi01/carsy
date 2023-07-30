@@ -14,9 +14,10 @@ export class UsersService {
     return this.usersRepository.save(createdUser);
   }
 
-  findOne(id: number) {
-    const user = this.usersRepository.findOneBy({ id });
-    if (!user) {
+  async findOne(id: number) {
+    const user = await this.usersRepository.findOneBy({ id });
+    console.log({ user });
+    if (!user || !id) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     return user;
