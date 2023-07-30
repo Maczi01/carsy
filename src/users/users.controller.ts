@@ -15,6 +15,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Serialize } from '../serialize.interceptor/serialize.interceptor';
 import { UserDto } from './dto/user.dto';
 import { AuthService } from './auth/auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from './entities/user.entity';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -25,8 +27,8 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
-  whoAmI(@Session() session: Record<string, any>) {
-    return this.usersService.findOne(session.userId);
+  whoAmI(@CurrentUser() user: User) {
+    return user;
   }
 
   @Post('/signup')

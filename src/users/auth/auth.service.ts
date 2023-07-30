@@ -28,13 +28,11 @@ export class AuthService {
 
   async signIn(email: string, password: string) {
     const [user] = await this.usersService.find(email);
-    console.log({ user });
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     const [salt, storedHash] = user.password.split('.');
-    console.log({ salt, storedHash });
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     if (storedHash !== hash.toString('hex')) {
       throw new BadRequestException('Bad password');
